@@ -26,4 +26,11 @@ typedef enum {
     TEXTURE_ZBLOCK,
 } Texture_Id; 
 
+extern const Rectangle _tex_rects[TEXTURES_COUNT];
+extern Texture2D _tex_atlas;
+extern int _atlas_loaded;
+
+void load_atlas(void);
+void unload_atlas(void);
+
 #endif /* TEXTURES_H_ */
