@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+raytris
 
 # Object files
 *.o
