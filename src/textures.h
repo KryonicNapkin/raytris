@@ -3,16 +3,16 @@
 
 #include "raylib.h"
 
-#define ATLAS_FILENAME   "assets/texture_atlas.png"
-#define ATLAS_SIZE       192
-#define TEXTURE_SIZE     24
-#define TEXTURES_COUNT   8*8 // 8 textures per row and column
+#define TEXTURE_ATLAS_FILENAME   "assets/texture_atlas.png"
+#define TEXTURE_ATLAS_SIZE       192
+#define TEXTURE_SIZE             24
+#define TEXTURES_COUNT           8*8 // 8 textures per row and column
 
-#define TEXTURE_RECT(id) ((Rectangle){ \
-    .x = (id % 8)*TEXTURE_SIZE,        \
-    .y = (id / 8)*TEXTURE_SIZE,        \
-    .width = TEXTURE_SIZE,             \
-    .height = TEXTURE_SIZE,            \
+#define TEXTURE_RECT(id)         ((Rectangle){ \
+    .x = (id % 8)*TEXTURE_SIZE,                \
+    .y = (id / 8)*TEXTURE_SIZE,                \
+    .width = TEXTURE_SIZE,                     \
+    .height = TEXTURE_SIZE,                    \
 })
 
 typedef enum {
@@ -30,7 +30,7 @@ extern const Rectangle _tex_rects[TEXTURES_COUNT];
 extern Texture2D _tex_atlas;
 extern int _atlas_loaded;
 
-void load_atlas(void);
-void unload_atlas(void);
+void load_texture_atlas(void);
+void unload_texture_atlas(void);
 
 #endif /* TEXTURES_H_ */
