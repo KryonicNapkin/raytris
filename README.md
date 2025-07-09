@@ -7,4 +7,4 @@ Tetris clone written in C using [raylib](https://www.raylib.com/)
 
 ## License
 
-Licensed under the MIT License - see the [!LICENSE](https://github.com/KryonicNapkin/raytris/blob/main/LICENSE) 
+Licensed under the MIT License - see the [LICENSE](https://github.com/KryonicNapkin/raytris/blob/main/LICENSE) 
