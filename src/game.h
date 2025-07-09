@@ -14,7 +14,7 @@
 #define GRID_BORDER_WIDTH (CELL_SPACING/2.0f)
 
 #define SHAPES_COUNT      7
-#define SHAPE_VALS        4
+#define SHAPE_BLOCKS      4
 
 #define BG_COLOR          0x282C34FF
 
@@ -23,11 +23,19 @@ typedef struct {
     int y;
 } Point;
 
+typedef enum {
+    INPUT_NONE = 0,
+    INPUT_MOVE_LEFT = -1,
+    INPUT_MOVE_RIGHT = 1,
+    INPUT_MOVE_FAST_DOWN = 2,
+    INPUT_ROTATE = 3,
+} Input;
+
 typedef struct {
     int x;
     int y;
     Texture_Id texture_id;
-    Point blocks[SHAPE_VALS];
+    Point blocks[SHAPE_BLOCKS];
 } Shape;
 
 typedef struct {
@@ -43,7 +51,7 @@ typedef struct {
     Grid grid;
 } Game;
 
-extern Point _shapes[SHAPES_COUNT][SHAPE_VALS];
+extern Point _shapes[SHAPES_COUNT][SHAPE_BLOCKS];
 
 void game_init(Game* game);
 Grid grid_create(void);
@@ -60,6 +68,9 @@ void shape_lock(Game* game, Shape* shape);
 int check_collisions(Grid grid, int x, int y);
 void grid_clear_row(Grid* grid, int row, unsigned int* new_score);
 int is_row_full(Grid grid, int row);
+
+Input game_get_input(void);
+void handle_input(Game* game, Input input);
 
 Rectangle grid_get_bounds(int grid_rows, int grid_cols, int cell_spacing, int cell_size);
 

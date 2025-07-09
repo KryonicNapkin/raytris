@@ -16,14 +16,14 @@
 })
 
 typedef enum {
-    TEXTURE_CELL_BG = 0,
-    TEXTURE_IBLOCK,
+    TEXTURE_IBLOCK = 0,
     TEXTURE_OBLOCK,
     TEXTURE_TBLOCK,
     TEXTURE_JBLOCK,
     TEXTURE_LBLOCK,
     TEXTURE_SBLOCK,
     TEXTURE_ZBLOCK,
+    TEXTURE_CELL_BG,
 } Texture_Id; 
 
 extern const Rectangle _tex_rects[TEXTURES_COUNT];
