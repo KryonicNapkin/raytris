@@ -139,16 +139,42 @@ void shape_lock(Game* game, Shape* shape) {
     game->active_shape = shape_create();
 }
 
-int check_collisions(Grid grid, int x, int y);
-void grid_clear_row(Grid* grid, int row, unsigned int* new_score);
-int is_row_full(Grid grid, int row);
+int check_collisions(Grid grid, int x, int y) {
+    if (x < 0 || x >= GRID_COLS) return 1;
+    else if (y >= GRID_ROWS) return 1;
+    else if (grid.cells[(y*GRID_ROWS)+x]) return 1;
+    else return 0;
+}
+
+void grid_clear_row(Grid* grid, int row, unsigned int* new_score) {
+    if (row < 0 || row >= GRID_ROWS) return;
+
+    for (int r = row; r < GRID_ROWS; --r) {
+        for (int c = 0; c < GRID_COLS; ++c) {
+            grid->cells[(r*GRID_ROWS)+c] = grid->cells[((r-1)*GRID_ROWS)+c];
+        }
+    }
+    if (new_score != NULL) *new_score += 50; 
+}
+
+int is_row_full(Grid grid, int row) {
+    if (row < 0 || row >= GRID_ROWS) return -1;
+
+    int result = GRID_COLS;
+    for (int c = 0; c < GRID_COLS; ++c) {
+        if (grid.cells[(row*GRID_ROWS)+c]) result--;
+    }
+    if (!result) return 1;
+    else return 0;
+}
 
 Rectangle grid_get_bounds(int grid_rows, int grid_cols, int cell_spacing, int cell_size) {
-    Rectangle bounds = {
-        .width = (cell_spacing*(grid_cols+1))+(grid_cols*cell_size), 
-        .height = (cell_spacing*(grid_cols+1))+(grid_cols*cell_size), 
-        .x = (WIN_WIDTH-bounds.x)/2.0f,
-        .y = (WIN_HEIGHT-bounds.y)/2.0f,
-    };
+    Rectangle bounds = {0};
+
+    bounds.width = (cell_spacing*(grid_cols+1))+(grid_cols*cell_size);
+    bounds.height = (cell_spacing*(grid_rows+1))+(grid_rows*cell_size); 
+    bounds.x = (WIN_WIDTH-bounds.width)/2.0f;
+    bounds.y = (WIN_HEIGHT-bounds.height)/2.0f;
+
     return bounds;
 }
