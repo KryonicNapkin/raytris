@@ -200,7 +200,6 @@ void handle_input(Game* game, Input input) {
             shape_move(game->grid, &game->active_shape, INPUT_MOVE_RIGHT);
         break;
         case INPUT_MOVE_FAST_DOWN:
-            shape_fall(game, &game->active_shape);
             return;
         break;
         case INPUT_ROTATE:
