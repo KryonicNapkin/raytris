@@ -1,5 +1,5 @@
-#ifndef TEXTURES_H_
-#define TEXTURES_H_
+#ifndef GRAPHICS_H_
+#define GRAPHICS_H_
 
 #include "raylib.h"
 
@@ -7,6 +7,11 @@
 #define TEXTURE_ATLAS_SIZE       192
 #define TEXTURE_SIZE             24
 #define TEXTURES_COUNT           8*8 // 8 textures per row and column
+
+#define FONT_FILENAME            "assets/8-BIT WONDER.TTF"
+#define HIGH_FONT_SIZE           36
+#define LOW_FONT_SIZE            27
+#define SCORE_TEXT_TOP_OFFSET    10
 
 #define TEXTURE_RECT(id)         ((Rectangle){ \
     .x = (id % 8)*TEXTURE_SIZE,                \
@@ -28,9 +33,14 @@ typedef enum {
 
 extern const Rectangle _tex_rects[TEXTURES_COUNT];
 extern Texture2D _tex_atlas;
-extern int _atlas_loaded;
+extern Font _high_font;
+extern Font _low_font;
 
 void load_texture_atlas(void);
 void unload_texture_atlas(void);
+void load_fonts(void);
+void unload_fonts(void);
 
-#endif /* TEXTURES_H_ */
+void draw_score(Rectangle grid_bounds, unsigned int score);
+
+#endif /* GRAPHICS_H_ */

@@ -1,6 +1,6 @@
 #include "raylib.h"
 
-#include "textures.h"
+#include "graphics.h"
 #include "game.h"
 
 #include <time.h>
@@ -10,6 +10,7 @@ int main(void) {
     SetTargetFPS(60);
 
     load_texture_atlas();
+    load_fonts();
     SetRandomSeed(time(NULL));
     Game game = {0};
     game_init(&game);
@@ -25,8 +26,10 @@ int main(void) {
         BeginDrawing(); {
             ClearBackground(GetColor(BG_COLOR));
             game_draw(game);
+            draw_score(game.grid.bounds, game.score);
         } EndDrawing();
     }
+    unload_fonts();
     unload_texture_atlas();
 
     CloseWindow();
