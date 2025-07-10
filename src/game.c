@@ -87,7 +87,7 @@ Shape shape_create(Grid grid, int* result) {
     shape.x = GRID_COLS/2;
     shape.y = 0;
 
-    if (result != NULL) *result = check_collisions(grid, GRID_COLS/2, 0);
+    if (result != NULL) *result = check_collisions(grid, shape.x, shape.y);
 
     return shape;
 }
