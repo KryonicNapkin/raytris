@@ -13,10 +13,20 @@ git clone https://github.com/KryonicNapkin/raytris.git
 ```
 
 2. Build, run and enjoy :)
+- Build a **Linux** executable:
 ```sh
 cd raytris
 make && ./raytris
 ```
+
+- Build a **Windows** executable:
+```sh
+cd raytris
+make -B -f Makefile.win && ./win_build/raytris.exe
+```
+
+If you're on Windows, Ufff, You can download [raytris.exe](https://github.com/KryonicNapkin/raytris/blob/main/win_build/raytris.exe)
+
 
 ## Credits 
 
