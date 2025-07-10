@@ -1,5 +1,5 @@
 CC      := gcc
-CFLAGS	:= -std=c11 -ggdb -Wall -Wextra -Wpedantic
+CFLAGS	:= -std=c11 -ggdb -Os -Wall -Wextra -Wpedantic
 LDFLAGS	:= -Llib/raylib -l:libraylib.a -lm
 
 SRC     := src
