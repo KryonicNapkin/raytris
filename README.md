@@ -2,8 +2,8 @@
 
 Tetris clone written in C using [raylib](https://www.raylib.com/)
 
-> [!WARNING]
-> Under active development
+> [!NOTE]
+> **Working!** :) But expect a lot of bugs
 
 ## Credit 
 
