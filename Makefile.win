@@ -1,0 +1,11 @@
+CC      := x86_64-w64-mingw32-gcc 
+CFLAGS	:= -std=c11 -ggdb -Os -Wall -Wextra -Wpedantic
+LDFLAGS	:= -Ilib/raylib-win64/include -Llib/raylib-win64/lib -l:raylib.dll -l:libraylib.a -lopengl32 -lgdi32 -lwinmm
+
+SRC     := src
+EXE     := win_build/raytris.exe
+
+all: $(EXE) 
+
+$(EXE): $(wildcard $(SRC)/*.c)
+	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@

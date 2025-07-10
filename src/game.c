@@ -150,10 +150,8 @@ void shape_lock(Game* game, Shape* shape) {
             destroy_rows[destroy_rows_size++] = temp.y;
         }
     }
-    if (destroy_rows_size) {
-        for (int x = 0; x < destroy_rows_size; ++x) {
-            grid_clear_row(&game->grid, destroy_rows[x], &game->score);
-        }
+    for (int x = 0; x < destroy_rows_size; ++x) {
+        grid_clear_row(&game->grid, destroy_rows[x], &game->score);
     }
     int result;
 
