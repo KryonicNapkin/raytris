@@ -27,6 +27,14 @@ make -B -f Makefile.win && ./win_build/raytris.exe
 
 If you're on Windows, Ufff, You can download [raytris.exe](https://github.com/KryonicNapkin/raytris/blob/main/win_build/raytris.exe)
 
+## Controls
+
+- Shape movement: 
+    - Left: A, Left arrow
+    - Right: D, Right arrow
+- Rotate: W, Up arrow
+- Exit: ESC
+- Shape fall: S, Down arrow
 
 ## Credits 
 
