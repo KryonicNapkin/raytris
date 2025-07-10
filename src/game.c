@@ -31,16 +31,21 @@ Grid grid_create(void) {
 }
 
 void game_update(Game* game) {
-    Point temp = {0};
-    for (int i = 0; i < SHAPE_BLOCKS; ++i) {
-        temp.x = game->active_shape.blocks[i].x + game->active_shape.x;
-        temp.y = game->active_shape.blocks[i].y + game->active_shape.y + 1;
-        if (check_collisions(game->grid, temp.x, temp.y)) {
-            shape_lock(game, &game->active_shape);
-            return;
+    static float frame_time = 0.0f;
+    frame_time += GetFrameTime();
+    if (frame_time >= GAME_UPDATE_FREQ0) {
+        Point temp = {0};
+        for (int i = 0; i < SHAPE_BLOCKS; ++i) {
+            temp.x = game->active_shape.blocks[i].x + game->active_shape.x;
+            temp.y = game->active_shape.blocks[i].y + game->active_shape.y + 1;
+            if (check_collisions(game->grid, temp.x, temp.y)) {
+                shape_lock(game, &game->active_shape);
+                return;
+            }
         }
+        game->active_shape.y += 1;
+        frame_time = 0.0f;
     }
-    game->active_shape.y += 1;
 }
 
 void game_draw(Game game) {
@@ -157,6 +162,26 @@ void shape_lock(Game* game, Shape* shape) {
     if (result) game->running = 0;
 }
 
+void shape_fall(Game* game, Shape* shape) {
+    Point temp[SHAPE_BLOCKS];
+    int result = 0;
+    calc:
+        for (int i = 0; i < SHAPE_BLOCKS; ++i) {
+            Point temp = {shape->blocks[i].x+shape->x, shape->blocks[i].y+shape->y+1};
+            if (!check_collisions(game->grid, temp.x, temp.y)) {
+                result++;
+            } else {
+                shape_lock(game, shape);
+                return;
+            }
+        }
+        if (result) {
+            shape->y += 1;
+            result = 0;
+            goto calc;
+        }
+}
+
 int check_collisions(Grid grid, int x, int y) {
     static int iter = 0;
     int result = 0;
@@ -208,6 +233,7 @@ void handle_input(Game* game, Input input) {
             shape_move(game->grid, &game->active_shape, INPUT_MOVE_RIGHT);
         break;
         case INPUT_MOVE_FAST_DOWN:
+            shape_fall(game, &game->active_shape);
             return;
         break;
         case INPUT_ROTATE:

@@ -18,6 +18,8 @@
 
 #define BG_COLOR          0x282C34FF
 
+#define GAME_UPDATE_FREQ  0.75f 
+
 typedef struct {
     int x;
     int y;
@@ -64,6 +66,7 @@ void shape_draw(Vector2 base_pos, Shape shape);
 void shape_move(Grid grid, Shape* shape, int dir);
 void shape_rotate(Grid grid, Shape* shape);
 void shape_lock(Game* game, Shape* shape);
+void shape_fall(Game* game, Shape* shape);
 
 int check_collisions(Grid grid, int x, int y);
 void grid_clear_row(Grid* grid, int row, unsigned int* new_score);

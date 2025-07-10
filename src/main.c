@@ -18,11 +18,7 @@ int main(void) {
     float frame_time = 0.0f;
     while (!WindowShouldClose() && game.running) {
         handle_input(&game, game_get_input());
-        frame_time += GetFrameTime();
-        if (frame_time >= 1/3.0f) {
-            frame_time = 0.0f;
-            game_update(&game);
-        }
+        game_update(&game);
         BeginDrawing(); {
             ClearBackground(GetColor(BG_COLOR));
             game_draw(game);
