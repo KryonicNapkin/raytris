@@ -1,6 +1,6 @@
 CC      := gcc
 CFLAGS	:= -std=c11 -ggdb -Wall -Wextra -Wpedantic
-LDFLAGS	:= -Lraylib -l:libraylib.a -lm -lX11 -lpthread -lGL -lrt
+LDFLAGS	:= -Llib/raylib -l:libraylib.a -lm
 
 SRC     := src
 EXE     := raytris
