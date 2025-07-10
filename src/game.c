@@ -33,7 +33,7 @@ Grid grid_create(void) {
 void game_update(Game* game) {
     static float frame_time = 0.0f;
     frame_time += GetFrameTime();
-    if (frame_time >= GAME_UPDATE_FREQ0) {
+    if (frame_time >= GAME_UPDATE_FREQ) {
         Point temp = {0};
         for (int i = 0; i < SHAPE_BLOCKS; ++i) {
             temp.x = game->active_shape.blocks[i].x + game->active_shape.x;
