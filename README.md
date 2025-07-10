@@ -3,7 +3,7 @@
 Tetris clone written in C using [raylib](https://www.raylib.com/)
 
 > [!NOTE]
-> **Working!** :) But expect a lot of bugs
+> **Working!** :) But expect some bugs
 
 ## Credit 
 
