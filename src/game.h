@@ -1,7 +1,7 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "textures.h"
+#include "graphics.h"
 
 #define WIN_WIDTH         800
 #define WIN_HEIGHT        600
@@ -59,7 +59,7 @@ void game_update(Game* game);
 void game_draw(Game game);
 void grid_draw(Grid grid);
 
-Shape shape_create(void);
+Shape shape_create(Grid grid, int* result);
 void shape_draw(Vector2 base_pos, Shape shape);
 void shape_move(Grid grid, Shape* shape, int dir);
 void shape_rotate(Grid grid, Shape* shape);

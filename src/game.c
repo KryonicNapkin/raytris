@@ -15,7 +15,7 @@ Point _shapes[SHAPES_COUNT][SHAPE_BLOCKS] = {
 
 void game_init(Game* game) {
     game->grid = grid_create();
-    game->active_shape = shape_create();
+    game->active_shape = shape_create(game->grid, NULL);
     game->running = 1;
     game->score = 0;
 }
@@ -73,12 +73,17 @@ void grid_draw(Grid grid) {
     DrawRectangleLinesEx(border, GRID_BORDER_WIDTH, GetColor(0x61AFEFFF));
 }
 
-Shape shape_create(void) {
+Shape shape_create(Grid grid, int* result) {
     Shape shape = {0};
-    shape.x = GRID_COLS/2;
-    shape.y = 0;
+
     shape.texture_id = GetRandomValue(0, TEXTURE_ZBLOCK);
     memcpy(shape.blocks, _shapes[shape.texture_id], SHAPE_BLOCKS * sizeof(Point));
+
+    shape.x = GRID_COLS/2;
+    shape.y = 0;
+
+    if (result != NULL) *result = check_collisions(grid, GRID_COLS/2, 0);
+
     return shape;
 }
 
@@ -145,8 +150,11 @@ void shape_lock(Game* game, Shape* shape) {
             grid_clear_row(&game->grid, destroy_rows[x], &game->score);
         }
     }
+    int result;
+
     game->score += 1;
-    game->active_shape = shape_create();
+    game->active_shape = shape_create(game->grid, &result);
+    if (result) game->running = 0;
 }
 
 int check_collisions(Grid grid, int x, int y) {
