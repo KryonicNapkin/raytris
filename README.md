@@ -25,7 +25,7 @@ cd raytris
 make -B -f Makefile.win && ./win_build/raytris.exe
 ```
 
-If you're on Windows, Ufff, You can download [raytris.exe](https://github.com/KryonicNapkin/raytris/blob/main/win_build/raytris.exe)
+If you're on Windows, Ufff, You can download the source code [raytris.zip](https://github.com/KryonicNapkin/raytris/archive/refs/heads/main.zip) and just run **raytris.exe**
 
 ## Controls
 
