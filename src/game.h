@@ -33,6 +33,11 @@ typedef enum {
     INPUT_ROTATE = 3,
 } Input;
 
+typedef enum {
+    STATE_IN_GAME = 0,
+    STATE_GAME_OVER,
+} State;
+
 typedef struct {
     int x;
     int y;
@@ -49,7 +54,8 @@ typedef struct {
 typedef struct {
     unsigned int score;
     unsigned int play_time_s;
-    int running;
+    State state;
+    bool running;
     Shape active_shape;
     Grid grid;
 } Game;
@@ -59,6 +65,7 @@ extern Point _shapes[SHAPES_COUNT][SHAPE_BLOCKS];
 void game_init(Game* game);
 Grid grid_create(void);
 void game_update(Game* game);
+void game_reset(Game* game);
 void game_draw(Game game);
 void grid_draw(Grid grid);
 
@@ -75,6 +82,7 @@ int is_row_full(Grid grid, int row);
 
 Input game_get_input(void);
 void handle_input(Game* game, Input input);
+void handle_end_game(Game* game, int end_game_feedback);
 
 Rectangle grid_get_bounds(int grid_rows, int grid_cols, int cell_spacing, int cell_size);
 

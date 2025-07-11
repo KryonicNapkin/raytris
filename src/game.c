@@ -60,6 +60,17 @@ void game_update(Game* game) {
     }
 }
 
+void game_reset(Game* game) {
+    game->running = 1;
+    game->score = 0;
+    game->play_time_s = 0;
+    game->state = STATE_IN_GAME;
+    for (int i = 0; i < GRID_ROWS*GRID_COLS; ++i) {
+        game->grid.cells[i] = TEXTURE_CELL_BG;
+    }
+    game->active_shape = shape_create(game->grid, NULL);
+}
+
 void game_draw(Game game) {
     grid_draw(game.grid);
     Vector2 base_pos = {
@@ -171,7 +182,7 @@ void shape_lock(Game* game, Shape* shape) {
 
     if (destroy_rows_size == 0) game->score += 1;
     game->active_shape = shape_create(game->grid, &result);
-    if (result) game->running = 0;
+    if (result) game->state = STATE_GAME_OVER;
 }
 
 void shape_fall(Game* game, Shape* shape) {
@@ -241,7 +252,6 @@ void handle_input(Game* game, Input input) {
         break;
         case INPUT_MOVE_FAST_DOWN:
             shape_fall(game, &game->active_shape);
-            return;
         break;
         case INPUT_ROTATE:
             shape_rotate(game->grid, &game->active_shape);
@@ -251,6 +261,15 @@ void handle_input(Game* game, Input input) {
             return;
         break;
     }
+}
+
+void handle_end_game(Game* game, int end_game_feedback) {
+    if (end_game_feedback == 1) {
+        game->running = 0;
+    } else if (end_game_feedback == 2) {
+        game_reset(game);
+    } 
+    return;
 }
 
 Rectangle grid_get_bounds(int grid_rows, int grid_cols, int cell_spacing, int cell_size) {

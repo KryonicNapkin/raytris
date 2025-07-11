@@ -75,3 +75,53 @@ void draw_play_time(Rectangle grid_bounds, unsigned int play_time) {
     DrawTextEx(_font, time_text, text_pos, FONT_SIZE, FONT_SPACING, WHITE);
     DrawTextEx(_font, time_buff, time_pos, FONT_SIZE, FONT_SPACING, WHITE);
 }
+
+int draw_endgame_screen(int win_width, int win_height, unsigned int play_time, unsigned int score) {
+    const char* text = "Game over!";
+
+    Vector2 text_pos = {
+        .x = (win_width-MeasureTextEx(_font, text, FONT_SIZE, FONT_SPACING).x)/2.0f,
+        .y = ((2.0*(win_height/5.0f))-MeasureTextEx(_font, text, FONT_SIZE, FONT_SPACING).y)/2.0f,
+    };
+
+    int mins = play_time / 60;
+    int secs = play_time % 60;
+
+    char playtime_buff[64];
+    snprintf(playtime_buff, sizeof(playtime_buff), "PLAYTIME: %02d:%02d", mins, secs);
+
+    Vector2 playtime_pos = {
+        .x = (win_width-MeasureTextEx(_font, playtime_buff, FONT_SIZE, FONT_SPACING).x)/2.0f,
+        .y = ((3.0*(win_height/5.0f))-MeasureTextEx(_font, playtime_buff, FONT_SIZE, FONT_SPACING).y)/2.0f,
+    };
+
+    char score_buff[64];
+    snprintf(score_buff, sizeof(score_buff), "SCORE: %d", score);
+
+    Vector2 score_pos = {
+        .x = (win_width-MeasureTextEx(_font, score_buff, FONT_SIZE, FONT_SPACING).x)/2.0f,
+        .y = ((4.0*(win_height/5.0f))-MeasureTextEx(_font, score_buff, FONT_SIZE, FONT_SPACING).y)/2.0f,
+    };
+
+    const char* feedback_text1 = "For restart press 'R'";
+    const char* feedback_text2 = "For exit press 'Q'";
+
+    Vector2 feedback_pos1 = {
+        .x = (win_width-MeasureTextEx(_font, feedback_text1, FONT_SIZE, FONT_SPACING).x)/2.0f,
+        .y =((7.0*(win_height/5.0f))-MeasureTextEx(_font, feedback_text1, FONT_SIZE, FONT_SPACING).y)/2.0f, 
+    };
+    Vector2 feedback_pos2 = {
+        .x = (win_width-MeasureTextEx(_font, feedback_text2, FONT_SIZE, FONT_SPACING).x)/2.0f,
+        .y =((8.0*(win_height/5.0f))-MeasureTextEx(_font, feedback_text2, FONT_SIZE, FONT_SPACING).y)/2.0f, 
+    };
+
+    DrawTextEx(_font, text, text_pos, FONT_SIZE, FONT_SPACING, WHITE);
+    DrawTextEx(_font, playtime_buff, playtime_pos, FONT_SIZE, FONT_SPACING, WHITE);
+    DrawTextEx(_font, score_buff, score_pos, FONT_SIZE, FONT_SPACING, WHITE);
+    DrawTextEx(_font, feedback_text1, feedback_pos1, FONT_SIZE, FONT_SPACING, WHITE);
+    DrawTextEx(_font, feedback_text2, feedback_pos2, FONT_SIZE, FONT_SPACING, WHITE);
+
+    if (IsKeyPressed(KEY_R)) return 2;
+    else if (IsKeyPressed(KEY_Q)) return 1;
+    return 0;
+}

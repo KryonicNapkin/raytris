@@ -44,5 +44,6 @@ void unload_font(void);
 
 void draw_score(Rectangle grid_bounds, unsigned int score);
 void draw_play_time(Rectangle grid_bounds, unsigned int play_time);
+int draw_endgame_screen(int win_width, int win_height, unsigned int play_time, unsigned int score);
 
 #endif /* GRAPHICS_H_ */

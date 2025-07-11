@@ -21,11 +21,15 @@ int main(void) {
     game_init(&game);
 
     while (!WindowShouldClose() && game.running) {
-        handle_input(&game, game_get_input());
-        game_update(&game);
+        if (game.state != STATE_GAME_OVER) {
+            handle_input(&game, game_get_input());
+            game_update(&game);
+        } else {
+            handle_end_game(&game, draw_endgame_screen(WIN_WIDTH, WIN_HEIGHT, game.play_time_s, game.score));
+        }
         BeginDrawing(); {
             ClearBackground(GetColor(BG_COLOR));
-            game_draw(game);
+            if (game.state != STATE_GAME_OVER) game_draw(game);
         } EndDrawing();
     }
     unload_font();
