@@ -10,7 +10,7 @@
 #define GRID_ROWS         20
 #define GRID_COLS         10
 #define CELL_SIZE         TEXTURE_SIZE
-#define CELL_SPACING      4
+#define CELL_SPACING      2
 #define GRID_BORDER_WIDTH (CELL_SPACING/2.0f)
 
 #define SHAPES_COUNT      7
@@ -48,6 +48,7 @@ typedef struct {
 
 typedef struct {
     unsigned int score;
+    unsigned int play_time_s;
     int running;
     Shape active_shape;
     Grid grid;
@@ -76,5 +77,7 @@ Input game_get_input(void);
 void handle_input(Game* game, Input input);
 
 Rectangle grid_get_bounds(int grid_rows, int grid_cols, int cell_spacing, int cell_size);
+
+int parse_time(unsigned int secs, int* hours, int* min, int* sec);
 
 #endif /* GAME_H_ */

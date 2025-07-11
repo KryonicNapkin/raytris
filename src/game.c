@@ -1,4 +1,5 @@
 #include "game.h"
+#include "graphics.h"
 #include "raylib.h"
 
 #include <string.h>
@@ -17,6 +18,7 @@ void game_init(Game* game) {
     game->grid = grid_create();
     game->active_shape = shape_create(game->grid, NULL);
     game->running = 1;
+    game->play_time_s = 0;
     game->score = 0;
 }
 
@@ -32,7 +34,11 @@ Grid grid_create(void) {
 
 void game_update(Game* game) {
     static float frame_time = 0.0f;
+    static float play_time_frame = 0.0f;
+
     frame_time += GetFrameTime();
+    play_time_frame += GetFrameTime();
+
     if (frame_time >= GAME_UPDATE_FREQ) {
         Point temp = {0};
         for (int i = 0; i < SHAPE_BLOCKS; ++i) {
@@ -40,11 +46,17 @@ void game_update(Game* game) {
             temp.y = game->active_shape.blocks[i].y + game->active_shape.y + 1;
             if (check_collisions(game->grid, temp.x, temp.y)) {
                 shape_lock(game, &game->active_shape);
+                frame_time = 0.0f;
                 return;
             }
         }
         game->active_shape.y += 1;
         frame_time = 0.0f;
+    }
+
+    if (play_time_frame >= 1.0f) {
+        game->play_time_s += 1;
+        play_time_frame = 0.0f;
     }
 }
 
@@ -55,6 +67,9 @@ void game_draw(Game game) {
         .y = game.grid.bounds.y+game.grid.cell_spacing,
     };
     shape_draw(base_pos, game.active_shape);
+    draw_score(game.grid.bounds, game.score);
+    draw_play_time(game.grid.bounds, game.play_time_s);
+    
 }
 
 void grid_draw(Grid grid) {
@@ -101,7 +116,6 @@ void shape_draw(Vector2 base_pos, Shape shape) {
             .y = base_pos.y+(base.y*(CELL_SIZE+CELL_SPACING)),
         };
 
-/*         TraceLog(LOG_INFO, "draw_pos: x = %d, y = %d", (int)draw_pos.x, (int)draw_pos.y); */
         if (base.y >= 0) {
             DrawTextureRec(_tex_atlas, _tex_rects[shape.texture_id], draw_pos, WHITE);
         }
@@ -181,15 +195,10 @@ void shape_fall(Game* game, Shape* shape) {
 }
 
 int check_collisions(Grid grid, int x, int y) {
-    static int iter = 0;
-    int result = 0;
-
-    if (x < 0 || x >= GRID_COLS) result = 1;
-    if (y >= GRID_ROWS) result = 1;
-    if (y >= 0 && grid.cells[(y*GRID_COLS)+x] != TEXTURE_CELL_BG) result = 1;
-
-/*     TraceLog(LOG_INFO, "[%d]: x = %d, y = %d; result: %d", iter++, x, y, result); */
-    return result;
+    if (x < 0 || x >= GRID_COLS) return 1;
+    if (y >= GRID_ROWS) return 1;
+    if (y >= 0 && grid.cells[(y*GRID_COLS)+x] != TEXTURE_CELL_BG) return 1;
+    return 0;
 }
 
 void grid_clear_row(Grid* grid, int row, unsigned int* new_score) {

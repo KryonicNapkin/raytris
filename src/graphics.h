@@ -4,18 +4,20 @@
 #include "raylib.h"
 
 #define TEXTURE_ATLAS_FILENAME   "assets/texture_atlas.png"
-#define TEXTURE_ATLAS_SIZE       192
-#define TEXTURE_SIZE             24
-#define TEXTURES_COUNT           8*8 // 8 textures per row and column
+#define TEXTURE_ATLAS_WIDTH      160
+#define TEXTURE_ATLAS_HEIGHT     20
+#define TEXTURE_SIZE             20
+#define TEXTURES_PER_ROW         8 
+#define TEXTURES_PER_COL         1 
 
-#define FONT_FILENAME            "assets/8-BIT WONDER.TTF"
-#define HIGH_FONT_SIZE           36
-#define LOW_FONT_SIZE            27
+#define FONT_FILENAME            "assets/CutePixel.ttf"
+#define FONT_SIZE                48
+#define FONT_SPACING             2
 #define SCORE_TEXT_TOP_OFFSET    10
 
 #define TEXTURE_RECT(id)         ((Rectangle){ \
-    .x = (id % 8)*TEXTURE_SIZE,                \
-    .y = (id / 8)*TEXTURE_SIZE,                \
+    .x = (id % TEXTURES_PER_ROW)*TEXTURE_SIZE, \
+    .y = (id / TEXTURES_PER_COL)*TEXTURE_SIZE, \
     .width = TEXTURE_SIZE,                     \
     .height = TEXTURE_SIZE,                    \
 })
@@ -31,16 +33,16 @@ typedef enum {
     TEXTURE_CELL_BG,
 } Texture_Id; 
 
-extern const Rectangle _tex_rects[TEXTURES_COUNT];
+extern const Rectangle _tex_rects[TEXTURES_PER_COL*TEXTURES_PER_ROW];
 extern Texture2D _tex_atlas;
-extern Font _high_font;
-extern Font _low_font;
+extern Font _font;
 
 void load_texture_atlas(void);
 void unload_texture_atlas(void);
-void load_fonts(void);
-void unload_fonts(void);
+void load_font(void);
+void unload_font(void);
 
 void draw_score(Rectangle grid_bounds, unsigned int score);
+void draw_play_time(Rectangle grid_bounds, unsigned int play_time);
 
 #endif /* GRAPHICS_H_ */
