@@ -78,6 +78,4 @@ void handle_input(Game* game, Input input);
 
 Rectangle grid_get_bounds(int grid_rows, int grid_cols, int cell_spacing, int cell_size);
 
-int parse_time(unsigned int secs, int* hours, int* min, int* sec);
-
 #endif /* GAME_H_ */
