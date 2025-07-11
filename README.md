@@ -39,7 +39,7 @@ If you're on Windows, Ufff, You can download the source code [raytris.zip](https
 ## Credits 
 
 - Borrowed ideas from [olzhasar's sdl-tetris game](https://github.com/olzhasar/sdl-tetris)
-- Used font: [8 Bit Wonder](https://www.dafont.com/8bit-wonder.font)
+- Used font: [CutePixel](https://www.dafont.com/cutepixel.font) by [zK4rim](https://www.dafont.com/profile.php?user=1720504)
 
 ## License
 
