@@ -81,7 +81,7 @@ void grid_draw(Grid grid) {
 Shape shape_create(Grid grid, int* result) {
     Shape shape = {0};
 
-    shape.texture_id = GetRandomValue(0, TEXTURE_ZBLOCK);
+    shape.texture_id = GetRandomValue(TEXTURE_IBLOCK, TEXTURE_ZBLOCK);
     memcpy(shape.blocks, _shapes[shape.texture_id], SHAPE_BLOCKS * sizeof(Point));
 
     shape.x = GRID_COLS/2;
@@ -155,7 +155,7 @@ void shape_lock(Game* game, Shape* shape) {
     }
     int result;
 
-    game->score += 1;
+    if (destroy_rows_size == 0) game->score += 1;
     game->active_shape = shape_create(game->grid, &result);
     if (result) game->running = 0;
 }
