@@ -17,6 +17,7 @@ Point _shapes[SHAPES_COUNT][SHAPE_BLOCKS] = {
 void game_init(Game* game) {
     game->grid = grid_create();
     game->active_shape = shape_create(game->grid, NULL);
+    game->next_shape = shape_create(game->grid, NULL);
     game->running = 1;
     game->play_time_s = 0;
     game->score = 0;
@@ -69,10 +70,11 @@ void game_reset(Game* game) {
         game->grid.cells[i] = TEXTURE_CELL_BG;
     }
     game->active_shape = shape_create(game->grid, NULL);
+    game->next_shape = shape_create(game->grid, NULL);
 }
 
 void game_draw(Game game) {
-    grid_draw(game.grid);
+    grid_draw(game.grid, GRID_ROWS, GRID_COLS);
     Vector2 base_pos = {
         .x = game.grid.bounds.x+game.grid.cell_spacing,
         .y = game.grid.bounds.y+game.grid.cell_spacing,
@@ -83,14 +85,14 @@ void game_draw(Game game) {
     
 }
 
-void grid_draw(Grid grid) {
+void grid_draw(Grid grid, int grid_rows, int grid_cols) {
     Vector2 pos = {grid.bounds.x+grid.cell_spacing, grid.bounds.y+grid.cell_spacing};
     Vector2 cell_pos = pos;
-    for (int i = 0; i < GRID_ROWS*GRID_COLS; ++i) {
+    for (int i = 0; i < grid_rows*grid_cols; ++i) {
 /*         TraceLog(LOG_INFO, "x: %d, y: %d", (int)cell_pos.x, (int)cell_pos.y); */
         DrawTextureRec(_tex_atlas, _tex_rects[grid.cells[i]], cell_pos, WHITE);
         cell_pos.x += (grid.cell_spacing+CELL_SIZE);
-        if ((i+1) % GRID_COLS == 0) {
+        if ((i+1) % grid_cols == 0) {
             cell_pos.y += (grid.cell_spacing+CELL_SIZE);
             cell_pos.x = pos.x;
         }
@@ -102,6 +104,42 @@ void grid_draw(Grid grid) {
         .height = grid.bounds.height+(2.0f*GRID_BORDER_WIDTH),
     };
     DrawRectangleLinesEx(border, GRID_BORDER_WIDTH, GetColor(0x61AFEFFF));
+}
+
+void show_next_shape(Shape next_shape) {
+    const char* text = "Next";
+    Rectangle game_grid_bounds = grid_get_bounds(GRID_ROWS, GRID_COLS, CELL_SPACING, CELL_SIZE);
+
+    Vector2 pos = {
+        .x = (game_grid_bounds.x-MeasureTextEx(_font, text, FONT_SIZE, FONT_SPACING).x)/2.0f+game_grid_bounds.x+game_grid_bounds.width,
+        .y = (WIN_HEIGHT/2.0f)+MeasureTextEx(_font, text, FONT_SIZE, FONT_SPACING).y,
+    };
+
+    DrawTextEx(_font, text, pos, FONT_SIZE, FONT_SPACING, WHITE);
+
+    const int width = 100;
+    const int height = 100;
+    Rectangle border = {
+        .width = width,
+        .height = height,
+        .x = (game_grid_bounds.x-width)/2.0f+game_grid_bounds.x+game_grid_bounds.width,
+        .y = (WIN_HEIGHT/2.0f)+MeasureTextEx(_font, text, FONT_SIZE, FONT_SPACING).y+(width/2.0f),
+    };
+
+    Vector2 shape_pos = {
+        .x = border.x+(border.width)/2.0f-(CELL_SIZE+CELL_SPACING)/1.5f,
+        .y = border.y+(border.height)/2.0f-(CELL_SIZE+CELL_SPACING)/1.5f,
+    };
+    DrawRectangleLinesEx(border, 1, WHITE);
+    for (int i = 0; i < SHAPE_BLOCKS; ++i) {
+        Point base = {next_shape.blocks[i].x, next_shape.blocks[i].y};
+
+        Vector2 draw_pos = {
+            .x = shape_pos.x+(base.x*(CELL_SIZE+CELL_SPACING)), 
+            .y = shape_pos.y+(base.y*(CELL_SIZE+CELL_SPACING)),
+        };
+        DrawTextureRec(_tex_atlas, _tex_rects[next_shape.texture_id], draw_pos, WHITE);
+    }
 }
 
 Shape shape_create(Grid grid, int* result) {
@@ -181,7 +219,8 @@ void shape_lock(Game* game, Shape* shape) {
     int result;
 
     if (destroy_rows_size == 0) game->score += 1;
-    game->active_shape = shape_create(game->grid, &result);
+    game->active_shape = game->next_shape;
+    game->next_shape = shape_create(game->grid, &result);
     if (result) game->state = STATE_GAME_OVER;
 }
 

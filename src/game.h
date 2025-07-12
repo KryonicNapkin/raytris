@@ -57,6 +57,7 @@ typedef struct {
     State state;
     bool running;
     Shape active_shape;
+    Shape next_shape;
     Grid grid;
 } Game;
 
@@ -67,7 +68,9 @@ Grid grid_create(void);
 void game_update(Game* game);
 void game_reset(Game* game);
 void game_draw(Game game);
-void grid_draw(Grid grid);
+void grid_draw(Grid grid, int grid_rows, int grid_cols);
+
+void show_next_shape(Shape next_shape);
 
 Shape shape_create(Grid grid, int* result);
 void shape_draw(Vector2 base_pos, Shape shape);

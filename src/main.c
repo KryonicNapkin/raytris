@@ -5,7 +5,7 @@
 
 #include <time.h>
 
-// TODO: End game screen
+// DONE: End game screen
 // TODO: Shows the next shape
 // DONE: Keep track of the time
 // TODO: Add levels
@@ -29,7 +29,10 @@ int main(void) {
         }
         BeginDrawing(); {
             ClearBackground(GetColor(BG_COLOR));
-            if (game.state != STATE_GAME_OVER) game_draw(game);
+            if (game.state != STATE_GAME_OVER) {
+                show_next_shape(game.next_shape);
+                game_draw(game);
+            }
         } EndDrawing();
     }
     unload_font();
